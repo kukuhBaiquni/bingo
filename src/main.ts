@@ -7,10 +7,9 @@ import { createPinia } from "pinia";
 const app = createApp(App);
 const pinia = createPinia();
 
+globalThis.PEER;
+globalThis.SELF_STREAM;
+
 app.use(pinia);
 app.use(router);
 app.mount("#app");
-
-if (typeof window !== "undefined") {
-  (window as any).PEER = PEER;
-}

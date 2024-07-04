@@ -1,7 +1,7 @@
 export {};
 
 declare global {
-  let PEER: RTCPeerConnection;
-  let STREAM: MediaStream;
-  function createPeerConnection();
+  var PEER: RTCPeerConnection;
+  var SELF_STREAM: MediaStream;
+  // function createPeerConnection();
 }

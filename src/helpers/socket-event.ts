@@ -19,11 +19,11 @@ export default function socketEvent() {
     setMe(data);
   });
 
-  socket.on("JOIN_ROOM", (data: string) => {
+  socket.on("INITIATE_ROOM", (data: Room) => {
     router.push({
       path: "/vid-call",
       query: {
-        roomId: data,
+        roomId: data.roomId,
       },
     });
   });
