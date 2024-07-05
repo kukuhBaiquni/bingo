@@ -3,7 +3,7 @@ import { useMe } from "@/store/useMe";
 import { useRoute } from "vue-router";
 import { onMounted, onBeforeUnmount } from "vue";
 
-export default function useRTC(): {
+export default function useRTC({ count }: { count: number }): {
   createPeerConnection: () => Promise<void>;
 } {
   const me = useMe();
@@ -25,7 +25,8 @@ export default function useRTC(): {
 
   const initializeDevice = async () => {
     const selfVideo: HTMLVideoElement = document.querySelector(
-      "#self-vid"
+      // "#self-vid"
+      `#remote-vid-${count}`
     ) as HTMLVideoElement;
 
     globalThis.SELF_STREAM = await navigator.mediaDevices.getUserMedia({
@@ -76,7 +77,7 @@ export default function useRTC(): {
   const handleTrackEvent = (e: RTCTrackEvent) => {
     console.log("TRACK EVENT~~~");
     const remoteVid: HTMLVideoElement = document.querySelector(
-      "#remote-vid"
+      `#remote-vid-${count}`
     ) as HTMLVideoElement;
 
     const [stream] = e.streams;

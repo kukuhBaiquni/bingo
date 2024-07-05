@@ -10,6 +10,8 @@ import { debounce } from "throttle-debounce";
 const route = useRoute();
 
 const joinedUser = ref<User[]>([]);
+const count = ref(3);
+const maxCol = ref(4);
 
 onBeforeUnmount(() => {
   const selfVideo: HTMLVideoElement = document.querySelector(
@@ -17,10 +19,10 @@ onBeforeUnmount(() => {
   ) as HTMLVideoElement;
   selfVideo.srcObject = null;
   socket.disconnect();
-  globalThis.PEER.close();
+  // globalThis.PEER.close();
 });
 
-const { createPeerConnection } = useRTC();
+const { createPeerConnection } = useRTC({ count: joinedUser.value.length });
 
 socket.on("INITIATE_CONNECTION", async (data) => {
   console.log("RECEIVE INITIATE");
@@ -73,18 +75,19 @@ socket.on("ICE_CANDIDATE", async (data) => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center h-screen bg-black">
-    <div class="flex gap-x-2">
+  <div
+    class="flex flex-col justify-center items-center h-[calc(100vh-100px)] bg-black"
+  >
+    <div class="flex flex-wrap gap-4 p-4 bg-zinc-600">
       <video
-        class="h-[400px] w-[400px] border border-zinc-500 bg-black"
+        v-for="(_, i) in 8"
+        :key="i"
+        class="bg-zinc-700 rounded-lg"
         autoPlay
-        id="self-vid"
-        playsInline
-      ></video>
-      <video
-        class="h-[400px] w-[400px] border border-zinc-500 bg-black"
-        autoPlay
-        id="remote-vid"
+        :style="{
+          width: `calc(100% / ${Math.min(count + 1, maxCol)})`,
+        }"
+        :id="`remote-vid-${i}`"
         playsInline
       ></video>
     </div>
