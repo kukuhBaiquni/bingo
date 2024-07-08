@@ -20,13 +20,17 @@ export default function useRTC({ count }: { count: number }): {
     const stream = globalThis.SELF_STREAM.getTracks();
     stream.forEach((track) => track.stop());
 
+    globalThis.PEER.setLocalDescription();
+    const sender = globalThis.PEER.getSenders();
+    console.log("SENDER", sender);
+    globalThis.PEER.removeTrack;
     globalThis.PEER.close();
   });
 
   const initializeDevice = async () => {
     const selfVideo: HTMLVideoElement = document.querySelector(
       // "#self-vid"
-      `#remote-vid-${count}`
+      `#self-vid`
     ) as HTMLVideoElement;
 
     globalThis.SELF_STREAM = await navigator.mediaDevices.getUserMedia({
@@ -77,7 +81,7 @@ export default function useRTC({ count }: { count: number }): {
   const handleTrackEvent = (e: RTCTrackEvent) => {
     console.log("TRACK EVENT~~~");
     const remoteVid: HTMLVideoElement = document.querySelector(
-      `#remote-vid-${count}`
+      `#remote-vid`
     ) as HTMLVideoElement;
 
     const [stream] = e.streams;

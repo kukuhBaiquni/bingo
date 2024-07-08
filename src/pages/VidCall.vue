@@ -7,6 +7,8 @@ import { onBeforeUnmount, ref } from "vue";
 import { useRoute } from "vue-router";
 import { debounce } from "throttle-debounce";
 
+import Peer from "simple-peer";
+
 const route = useRoute();
 
 const joinedUser = ref<User[]>([]);
@@ -80,14 +82,21 @@ socket.on("ICE_CANDIDATE", async (data) => {
   >
     <div class="flex flex-wrap gap-4 p-4 bg-zinc-600">
       <video
-        v-for="(_, i) in 8"
-        :key="i"
         class="bg-zinc-700 rounded-lg"
         autoPlay
         :style="{
           width: `calc(100% / ${Math.min(count + 1, maxCol)})`,
         }"
-        :id="`remote-vid-${i}`"
+        id="self-vid"
+        playsInline
+      ></video>
+      <video
+        class="bg-zinc-700 rounded-lg"
+        autoPlay
+        :style="{
+          width: `calc(100% / ${Math.min(count + 1, maxCol)})`,
+        }"
+        id="remote-vid"
         playsInline
       ></video>
     </div>
